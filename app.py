@@ -1,21 +1,19 @@
 
-from flask import Flask
+from flask import Flask, Blueprint
 from flask_restplus import Api
-from database import db_session, init_db
-from models import User, Beer, Review
+
+import settings
+from apis import api
+from database import db, models
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = settings.SQLALCHEMY_DATABASE_URI
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = settings.SQLALCHEMY_TRACK_MODIFICATIONS
 
-api = Api(app, version='1.0', title='BeerReview API',
-    description='A simple Beer Review API',
-)
-
-beers_ns = api.namespace('beers', description='Beer operations')
-reviews_ns = api.namespace('reviews', description='Review operations')
-
-# @app.teardown_appcontext
-# def shutdown_session(exception=None):
-#     db_session.remove()
+blueprint = Blueprint('api', __name__, url_prefix='/api')
+api.init_app(blueprint)
+app.register_blueprint(blueprint)
+db.init_app(app)
 
 if __name__ == '__main__':
     app.run(debug=True)
