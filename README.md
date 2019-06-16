@@ -1,0 +1,1 @@
+This is a flask rest plus application that uses a SQL Lite database for keeping Beers and Reviews
