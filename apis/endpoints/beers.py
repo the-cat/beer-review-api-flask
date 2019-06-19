@@ -29,8 +29,15 @@ class BeerList(Resource):
         actions.create_beer(api.payload)
 
 
-# @api.route('/<int:id>')
-# @api.response(404, 'Category not found.')
-# class BeerItem(Resource):
-#     def get(self, id):
-#         pass # get beer
+@api.route('/<int:id>')
+@api.response(404, 'Beer not found.')
+class BeerItem(Resource):
+    
+    @api.marshal_with(beer)
+    def get(self, id):
+        return Beer.query.filter(Beer.id==id).one()
+
+    @api.response(204, 'Beer successfully deleted.')
+    def delete(self, id):
+        actions.delete_beer(id)
+        return None, 204

@@ -15,5 +15,7 @@ api.init_app(blueprint)
 app.register_blueprint(blueprint)
 db.init_app(app)
 
+# ßdb.create_all(app=app)
+
 if __name__ == '__main__':
     app.run(debug=True)
