@@ -35,6 +35,7 @@ class BeerItem(Resource):
     
     @api.marshal_with(beer)
     def get(self, id):
+        ''' Get the beer with the given id '''
         return Beer.query.filter(Beer.id==id).one()
 
     @api.response(204, 'Beer successfully deleted.')
